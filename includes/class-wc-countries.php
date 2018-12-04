@@ -71,6 +71,87 @@ class WC_Countries {
 	}
 
 	/**
+	 * Get continents that the store sells to.
+	 *
+	 * @return array
+	 */
+	public function get_allowed_continents() {
+		if ( 'all' === get_option( 'woocommerce_allowed_countries' ) ) {
+			return apply_filters( 'woocommerce_countries_allowed_continents', $this->get_continents() );
+		}
+
+		if ( 'all_except' === get_option( 'woocommerce_allowed_countries' ) ) {
+			$except_countries = get_option( 'woocommerce_all_except_countries', array() );
+
+			if ( ! $except_countries ) {
+				return $this->get_continents();
+			} else {
+				$all_except_countries = $this->countries;
+				foreach ( $except_countries as $country ) {
+					unset( $all_except_countries[ $country ] );
+				}
+
+				$continents = $this->get_continents();
+				$all_except_continents = array();
+				foreach( $all_except_countries as $country ) {
+					$continent = $this->get_continent_code_for_country( $country );
+					if ( !isset( $all_except_continents[$continent] ) ) {
+						$all_except_continents[$continent] = $continents[$continent];
+					}
+				}
+
+				return apply_filters( 'woocommerce_countries_allowed_continents', $all_except_continents );
+			}
+		}
+
+		$allowed_continents = array();
+		$continents = $this->get_continents();
+		$raw_countries = get_option( 'woocommerce_specific_allowed_countries', array() );
+
+		if ( $raw_countries ) {
+			foreach ( $raw_countries as $country ) {
+				$continent = $this->get_continent_code_for_country( $country );
+				if ( !isset( $allowed_continents[$continent] ) ) {
+					$allowed_continents[$continent] = $continents[$continent];
+				}
+			}
+		}
+
+		return apply_filters( 'woocommerce_countries_allowed_continents', $allowed_continents );
+	}
+
+	/**
+	 * Get continents that the store ships to.
+	 *
+	 * @return array
+	 */
+	public function get_shipping_continents() {
+		if ( '' === get_option( 'woocommerce_ship_to_countries' ) ) {
+			return apply_filters( 'woocommerce_countries_shipping_continents', $this->get_allowed_continents() );
+		}
+
+		if ( 'all' === get_option( 'woocommerce_ship_to_countries' ) ) {
+			return apply_filters( 'woocommerce_countries_shipping_continents', $this->get_continents() );
+		}
+
+		$shipping_continents = array();
+		$continents = $this->get_continents();
+
+		$raw_countries = get_option( 'woocommerce_specific_ship_to_countries' );
+
+		if ( $raw_countries ) {
+			foreach ( $raw_countries as $country ) {
+				$continent = $this->get_continent_code_for_country( $country );
+				if ( !isset( $shipping_continents[$continent] ) ) {
+					$shipping_continents[$continent] = $continents[$continent];
+				}
+			}
+		}
+
+		return apply_filters( 'woocommerce_countries_shipping_continents', $shipping_continents );
+	}
+
+	/**
 	 * Get continent code for a country code.
 	 *
 	 * @since 2.6.0
