@@ -231,11 +231,7 @@ class WC_Settings_Shipping extends WC_Settings_Page {
 		}
 
 		$shipping_continents = WC()->countries->get_shipping_continents();
-		$allowed_countries   = WC()->countries->get_allowed_countries();
 		$shipping_countries  = WC()->countries->get_shipping_countries();
-		$wc_shipping         = WC_Shipping::instance();
-		$shipping_methods    = $wc_shipping->get_shipping_methods();
-		$continents          = WC()->countries->get_continents();
 
 		// Prepare locations.
 		$locations = array();
@@ -277,8 +273,6 @@ class WC_Settings_Shipping extends WC_Settings_Page {
 	 * Show zones
 	 */
 	protected function zones_screen() {
-		$allowed_countries = WC()->countries->get_allowed_countries();
-		$continents        = WC()->countries->get_continents();
 		$method_count      = wc_get_shipping_method_count();
 
 		wp_localize_script(
