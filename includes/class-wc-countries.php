@@ -93,10 +93,10 @@ class WC_Countries {
 
 				$continents = $this->get_continents();
 				$all_except_continents = array();
-				foreach( $all_except_countries as $country ) {
+				foreach ( $all_except_countries as $country ) {
 					$continent = $this->get_continent_code_for_country( $country );
-					if ( !isset( $all_except_continents[$continent] ) ) {
-						$all_except_continents[$continent] = $continents[$continent];
+					if ( ! isset( $all_except_continents[ $continent ] ) ) {
+						$all_except_continents[ $continent ] = $continents[ $continent ];
 					}
 				}
 
@@ -111,8 +111,8 @@ class WC_Countries {
 		if ( $raw_countries ) {
 			foreach ( $raw_countries as $country ) {
 				$continent = $this->get_continent_code_for_country( $country );
-				if ( !isset( $allowed_continents[$continent] ) ) {
-					$allowed_continents[$continent] = $continents[$continent];
+				if ( ! isset( $allowed_continents[ $continent ] ) ) {
+					$allowed_continents[ $continent ] = $continents[ $continent ];
 				}
 			}
 		}
@@ -142,8 +142,8 @@ class WC_Countries {
 		if ( $raw_countries ) {
 			foreach ( $raw_countries as $country ) {
 				$continent = $this->get_continent_code_for_country( $country );
-				if ( !isset( $shipping_continents[$continent] ) ) {
-					$shipping_continents[$continent] = $continents[$continent];
+				if ( ! isset( $shipping_continents[ $continent ] ) ) {
+					$shipping_continents[ $continent ] = $continents[ $continent ];
 				}
 			}
 		}
